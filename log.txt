@@ -1,0 +1,52 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.imithra.oauth:oauth >-----------------------
+[INFO] Building framework 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The artifact mysql:mysql-connector-java:jar:8.0.33 has been relocated to com.mysql:mysql-connector-j:jar:8.0.33: MySQL Connector/J artifacts moved to reverse-DNS compliant Maven 2+ coordinates.
+[INFO] 
+[INFO] --- maven-clean-plugin:3.2.0:clean (default-clean) @ oauth ---
+[INFO] Deleting D:\Project\apps\appserver\iframework\target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ oauth ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ oauth ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 10 source files with javac [debug release 17] to target\classes
+[WARNING] /D:/Project/apps/appserver/iframework/src/main/java/com/web/framework/dao/request/SigninRequest.java:[10,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ oauth ---
+[INFO] Not copying test resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ oauth ---
+[INFO] Not compiling test sources
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0:test (default-test) @ oauth ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.3.0:jar (default-jar) @ oauth ---
+[INFO] Building jar: D:\Project\apps\appserver\iframework\target\oauth-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:3.1.1:install (default-install) @ oauth ---
+[INFO] Installing D:\Project\apps\appserver\iframework\pom.xml to C:\Application\repo\com\imithra\oauth\oauth\0.0.1-SNAPSHOT\oauth-0.0.1-SNAPSHOT.pom
+[INFO] Installing D:\Project\apps\appserver\iframework\target\oauth-0.0.1-SNAPSHOT.jar to C:\Application\repo\com\imithra\oauth\oauth\0.0.1-SNAPSHOT\oauth-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-deploy-plugin:3.1.1:deploy (default-deploy) @ oauth ---
+Downloading from corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/maven-metadata.xml
+Uploading to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/oauth-0.0.1-20231106.035107-1.pom
+Progress (1): 4.1/6.8 kBProgress (1): 6.8 kB                        Uploaded to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/oauth-0.0.1-20231106.035107-1.pom (6.8 kB at 242 kB/s)
+Uploading to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/oauth-0.0.1-20231106.035107-1.jar
+Progress (1): 4.1/17 kBProgress (1): 8.2/17 kBProgress (1): 12/17 kB Progress (1): 16/17 kBProgress (1): 17 kB                      Uploaded to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/oauth-0.0.1-20231106.035107-1.jar (17 kB at 1.7 MB/s)
+Downloading from corp1: file://C:/Application/repo/com/imithra/oauth/oauth/maven-metadata.xml
+Uploading to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/maven-metadata.xml
+Progress (1): 772 B                   Uploaded to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/0.0.1-SNAPSHOT/maven-metadata.xml (772 B at 48 kB/s)
+Uploading to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/maven-metadata.xml
+Progress (1): 282 B                   Uploaded to corp1: file://C:/Application/repo/com/imithra/oauth/oauth/maven-metadata.xml (282 B at 20 kB/s)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.694 s
+[INFO] Finished at: 2023-11-05T21:51:15-06:00
+[INFO] ------------------------------------------------------------------------
