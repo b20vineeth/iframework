@@ -15,7 +15,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<io.springfox.version>2.9.2</io.springfox.version>
-		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<com.google.code.gson>2.8.6</com.google.code.gson>
 		<org.projectlombok>1.18.18</org.projectlombok>
 		<io.springfox.version>2.9.2</io.springfox.version>
@@ -116,6 +116,9 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
+ 
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
