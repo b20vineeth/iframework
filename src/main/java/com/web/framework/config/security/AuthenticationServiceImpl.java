@@ -1,5 +1,6 @@
 package com.web.framework.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,13 +21,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserRepository userRepository = null;
-    private final PasswordEncoder passwordEncoder = null;
-    private final JwtService jwtService = null;
-    private final AuthenticationManager authenticationManager = null;
+	 @Autowired
+	 UserRepository userRepository ;
+    
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    AuthenticationManager authenticationManager;
     @Override
     public JwtAuthenticationResponse signup(UserVo uservo) {
-        var user = User.builder().firstName(uservo.getFirstname()).lastName(uservo.getLastname())
+        var user = User.builder().firstName(uservo.getFirstName()).lastName(uservo.getLastName())
                 .uname(uservo.getEmail()).password(passwordEncoder.encode(uservo.getPassword()))
                 .role(Role.USER).build();
         userRepository.save(user);

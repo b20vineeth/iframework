@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserModel {
+public class UserModel extends Model {
 	
 	private String id;
 	@JsonProperty("user_name")

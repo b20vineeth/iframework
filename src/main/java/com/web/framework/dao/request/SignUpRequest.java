@@ -1,5 +1,7 @@
 package com.web.framework.dao.request;
 
+import com.web.framework.model.Model;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SignUpRequest {
+public class SignUpRequest  extends Model{
     private String firstName;
     private String lastName;
     private String uname;
