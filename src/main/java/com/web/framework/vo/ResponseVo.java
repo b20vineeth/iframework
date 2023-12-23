@@ -15,5 +15,6 @@ public class ResponseVo  {
 	Page page;
 	
 	Map<String, String> mapResponse;
+	 
 	
 }

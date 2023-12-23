@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Query;
-
 import org.springframework.stereotype.Component;
 
 import com.web.framework.exception.BussinessException;
@@ -16,9 +14,14 @@ import com.web.framework.util.QueryString;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.FeatureFilterVo;
 
+import jakarta.persistence.Query;
+import jakarta.persistence.TemporalType;
+
 @Component
 public class BevEvaluatorPersistor extends Persistor {
-
+ 
+	 
+	
 	@Override
 	public FeatureVo perform(AbstractVo featureVo) throws BussinessException {
 
@@ -26,7 +29,7 @@ public class BevEvaluatorPersistor extends Persistor {
 		FeatureFilterVo featureFilterVo = (FeatureFilterVo) featureVo;
 		StringBuilder query = constructQuery(featureFilterVo);
  
-		Query q = em.createNativeQuery(query.toString());
+		Query q = (Query) em.createNativeQuery(query.toString());
 		setParameter(featureVo, q);
 		List<Object[]> featureVos = q.getResultList();
 		if (Objects.nonNull(featureVos)) {
@@ -101,11 +104,12 @@ public class BevEvaluatorPersistor extends Persistor {
 
 	@Override
 	protected void setParameter(AbstractVo featureVo, Query q) {
-
+		 
 		FeatureFilterVo featureFilterVo = (FeatureFilterVo) featureVo;
 		q.setParameter("configcod", featureFilterVo.getFeatureName());
-		q.setParameter("fromdate", new LocalDate().now());
-		q.setParameter("todate",  new LocalDate().now());
+		q.setParameter("fromDate",new LocalDate().now());
+		q.setParameter("toDate",new LocalDate().now());
+	 
 		
 	}
 

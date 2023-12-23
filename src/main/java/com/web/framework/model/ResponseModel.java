@@ -17,4 +17,6 @@ public class ResponseModel {
 	List<? extends Model>  datas;
 	 
 	Page page;
+	
+	List<String> flags;
 }

@@ -1,4 +1,4 @@
-package com.web.framework.util;
+package com.web.framework.security;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -8,8 +8,6 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,52 +20,31 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommonUtl implements ICommonUtl {
+public class SecurityImpl implements Security {
 
 	@Value("${security.tokenKey}")
 	private String tokenKey;
-
-	private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
-	private static final Pattern pattern = Pattern.compile(EMAIL_REGEX);
+	
+	
+	
+	
 
 	private static final String ALGO = "AES/CBC/PKCS5Padding";
 	private byte[] keyValue;
-
-	public boolean isValidName(String s) {
-		return s.matches("^[a-zA-Z0-9\\s]+$");
-	}
-
-	public boolean isAlphaNumeric(String s) {
-		return s != null && s.matches("^[a-zA-Z0-9.]*$");
-	}
-
-	@Override
-	public String getStatus(String string) {
-		if (Objects.nonNull(string)) {
-			return string;
-		} else {
-			return "Y";
-		}
-	}
 
 	public void Crypto(String key) {
 		keyValue = key.getBytes();
 	}
 
-	public String encrypt(String Data, String tokenKey) {
-		Key key;
-		try {
-			key = generateKey(tokenKey);
-			String encryptedValue = generateEncriptedValue(Data, key);
-			String urlEncodeddata = URLEncoder.encode(encryptedValue, "UTF-8");
-			return urlEncodeddata;
-		} catch (Exception e) {
-
-			return null;
-		}
-
+	
+	public String encrypt(String Data) throws Exception {
+		Key key = generateKey(this.tokenKey);
+		String encryptedValue = generateEncriptedValue(Data, key);
+		String urlEncodeddata=URLEncoder.encode(encryptedValue,"UTF-8");
+		return urlEncodeddata;
 	}
+	
+ 
 
 	private String generateEncriptedValue(String Data, Key key) throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
@@ -79,17 +56,14 @@ public class CommonUtl implements ICommonUtl {
 		return encryptedValue;
 	}
 
-	public String decrypt(String encryptedData, String tokenKey) {
-		try {
-
-			Key key = generateKey(tokenKey);
-			encryptedData = URLDecoder.decode(encryptedData, "UTF-8");
-			String decryptedValue = generateDecryptedValues(encryptedData, key);
-			return decryptedValue;
-		} catch (Exception e) {
-			return null;
-		}
+	 
+	public String decrypt(String encryptedData) throws Exception {
+		Key key = generateKey(this.tokenKey);
+		encryptedData=URLDecoder.decode(encryptedData, "UTF-8");
+		String decryptedValue = generateDecryptedValues(encryptedData, key);
+		return decryptedValue;
 	}
+
 
 	private String generateDecryptedValues(String encryptedData, Key key)
 			throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
@@ -107,15 +81,45 @@ public class CommonUtl implements ICommonUtl {
 		Key key = new SecretKeySpec(keyValue, "AES");
 		return key;
 	}
-
+	
 	public Key generateKey(String token) throws Exception {
 		Crypto(token);
 		Key key = new SecretKeySpec(keyValue, "AES");
 		return key;
 	}
 
-	public boolean isEmailIdValid(String email) {
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
+
+	@Override
+	public Integer secureDecrpt(String data) {
+
+		String datakey = null;
+		if (Objects.nonNull(data)) {
+			try {
+				datakey = this.decrypt(data);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (Objects.nonNull(datakey)) {
+
+				return Integer.valueOf(datakey);
+			}
+		}
+		return null;
 	}
+
+
+	@Override
+	public String secureEncrypt(Integer data) {
+	 
+		String datakey=null;
+		try {
+			datakey = this.encrypt(data.toString());
+		} catch (Exception e) {
+		 
+			e.printStackTrace();
+		}
+		return Objects.nonNull(datakey)?datakey:null;
+	}
+
+
 }

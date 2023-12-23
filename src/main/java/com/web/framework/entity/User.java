@@ -1,11 +1,14 @@
 package com.web.framework.entity;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,24 +30,43 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "USRDTL")
 public class User implements UserDetails {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Integer id;
 	
-	@Column(name = "firstnam")
+	@Column(name = "FRSTNAM")
 	private String firstName;
 	
-	@Column(name = "lastnam")
+	@Column(name = "LASTNAM")
 	private String lastName;
 	 
-	
+	@Column(name = "PASSWORD")
 	private String password;
-	
-	@Column(unique = true)
+	 
+	@Column(name = "UNAM",unique = true)
 	private String uname;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "ROLE")
 	private Role role;
+	
+	@Column(name = "EMAIL",unique = true)
+	private String email;
+	
+	@Column(name = "LSTUPD")
+	private Date lastupdate;
+
+	@Column(name = "VLDFRM")
+	private Date validFrom;
+
+	@Column(name = "VLDTO")
+	private Date validTo;
+
+	@Column(name = "CRTDAT")
+	private Date createdDate;
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

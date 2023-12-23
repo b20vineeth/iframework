@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class AbstractVo {
 
 	public static final String YES = "Y";
@@ -36,6 +37,9 @@ public class AbstractVo {
 	
 	public String component;
 	
+	@JsonProperty("source")
+	public String source;
+
 	
 	@JsonProperty("created_to_date")
 	private Date toDate;

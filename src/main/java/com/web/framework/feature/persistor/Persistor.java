@@ -2,17 +2,19 @@ package com.web.framework.feature.persistor;
 
 import java.math.BigInteger;
 import java.util.Objects;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+  
 
 import com.web.framework.entity.BaseEntity;
 import com.web.framework.exception.BussinessException;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.Page;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+ 
 public abstract class Persistor<T extends AbstractVo> implements IPersistor{
+	
 	@PersistenceContext
 	public EntityManager em;
 	
@@ -36,7 +38,8 @@ public abstract class Persistor<T extends AbstractVo> implements IPersistor{
 		 	if(Objects.isNull(page)) {
 		 		page=new Page();
 		 	}
-			Query q1 = em.createNativeQuery("Select count(*) from ("+query.toString()+") c where 1=1");
+		 	Query q1=null;
+			//Query q1 = em.createNativeQuery("Select count(*) from ("+query.toString()+") c where 1=1");
 			setParameter(detailVo, q1);
 			int count= ((BigInteger) q1.getSingleResult()).intValue();
 			page.setMaxResult(count);

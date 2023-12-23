@@ -15,6 +15,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,32 +40,34 @@ public class BaseEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Integer id;
 
-	@Column(name = "crtdat")  
+	@Column(name = "CRTDAT")  
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
 	
 	
-	@Column(name = "lstupd",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
+	@Column(name = "LSTUPD",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastupdate;
 	
-	
+	@ManyToOne
+	@JoinColumn(name="LSTUPDUSR", referencedColumnName = "ID")    
+	private User lastupdatedUser;
 
-	@Column(name = "frmdat",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
+	@Column(name = "FRMDAT",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fromDate;
 	
-	@Column(name = "todat",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
+	@Column(name = "TODAT",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")  
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date toDate;
 	
-	@Column(name = "status",length=1)
+	@Column(name = "STATUS",length=1)
 	@ColumnDefault(value="'Y'")
-	@NonNull
-	@JsonProperty("status")
+	@NonNull 
 	private String status="Y";
 
   
