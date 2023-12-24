@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
-import com.web.framework.exception.BussinessException;
+import com.web.framework.exception.BusinessException;
 import com.web.framework.feature.persistor.Persistor;
 import com.web.framework.feature.vo.FeatureVo;
 import com.web.framework.util.LocalDate;
@@ -23,7 +23,7 @@ public class BevEvaluatorPersistor extends Persistor {
 	 
 	
 	@Override
-	public FeatureVo perform(AbstractVo featureVo) throws BussinessException {
+	public FeatureVo perform(AbstractVo featureVo) throws BusinessException {
 
 		FeatureVo featureDetailsVo = null;
 		FeatureFilterVo featureFilterVo = (FeatureFilterVo) featureVo;

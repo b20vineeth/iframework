@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.google.gson.Gson;
 import com.web.framework.event.IEvent;
-import com.web.framework.exception.BussinessException;
+import com.web.framework.exception.BusinessException;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.EventVo;
 
@@ -23,7 +23,7 @@ public class Listener {
  
 	@Async 
     @EventListener
-	void sendMsgEvent(EventVo eventVo) throws BussinessException {
+	void sendMsgEvent(EventVo eventVo) throws BusinessException {
 		String[] events = eventVo.getEventName().split(",");
 		try {
 			Class classname = Class.forName(eventVo.getMsgClass());

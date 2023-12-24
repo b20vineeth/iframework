@@ -4,7 +4,7 @@ package com.web.framework.invoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.web.framework.exception.BussinessException;
+import com.web.framework.exception.BusinessException;
 import com.web.framework.vo.AbstractVo;
 
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +17,7 @@ public class RemoveSessionInvoker extends Invoker{
 	
 	
 	@Override
-	public void execute(AbstractVo featureVo) throws BussinessException {
+	public void execute(AbstractVo featureVo) throws BusinessException {
 		
 		httpSession.invalidate();
 		

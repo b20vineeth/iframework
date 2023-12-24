@@ -1,4 +1,4 @@
-package com.web.framework.dao.request;
+package com.web.framework.model.request;
 
 import com.web.framework.model.Model;
 

@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.google.gson.Gson;
 import com.web.framework.enricher.IEnricher;
-import com.web.framework.exception.BussinessException;
+import com.web.framework.exception.BusinessException;
 import com.web.framework.feature.vo.FeatureVo;
 import com.web.framework.invoker.IInvoker;
 import com.web.framework.message.service.KafkaProducer;
@@ -38,11 +38,11 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 
 	List<ErrorVo> errors;
 
-	protected abstract <R extends Object> R perform(T featureVo) throws BussinessException;
+	protected abstract <R extends Object> R perform(T featureVo) throws BusinessException;
 
-	protected abstract FeatureVo getBussinessConfiguration() throws BussinessException;
+	protected abstract FeatureVo getBussinessConfiguration() throws BusinessException;
 
-	public <R extends Object> R execute(T featureVo) throws BussinessException {
+	public <R extends Object> R execute(T featureVo) throws BusinessException {
 		this.errors=null;
 		FeatureVo featureConfig = getBussinessConfiguration();
 
@@ -87,7 +87,7 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 			featureConfig.getEnricher().stream().forEach(enricher -> {
 				try {
 					iEnricher.get(enricher).execute(featureVo);
-				} catch (BussinessException e) {
+				} catch (BusinessException e) {
 					handleErrorMessage(e,"enricher");
 				}
 			});
@@ -104,7 +104,7 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 			featureConfig.getPreinvoker().stream().forEach(invoker -> {
 				try {
 					iInvoker.get(invoker).execute(featureVo);
-				} catch (BussinessException e) {
+				} catch (BusinessException e) {
 
 					handleErrorMessage(e,"invoker");
 				}
@@ -120,7 +120,7 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 			featureConfig.getPostinvoker().stream().forEach(invoker -> {
 				try {
 					iInvoker.get(invoker).execute(featureVo);
-				} catch (BussinessException e) {
+				} catch (BusinessException e) {
 
 					handleErrorMessage(e,"invoker");
 				}
@@ -151,14 +151,14 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void validator(T featureVo, FeatureVo featureConfig) throws BussinessException {
+	protected void validator(T featureVo, FeatureVo featureConfig) throws BusinessException {
 
 		if (Objects.nonNull(featureConfig) && Objects.nonNull(featureConfig.getValidatorsIds())) {
 
 			featureConfig.getValidatorsIds().stream().forEach(validator -> {
 				try {
 					validators.get(validator).execute(featureVo);
-				} catch (BussinessException e) {
+				} catch (BusinessException e) {
 
 					handleErrorMessage(e,"Validation");
 					
@@ -167,14 +167,14 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 
 			if (Objects.nonNull(this.errors) && !this.errors.isEmpty()) {
 
-				throw new BussinessException(this.errors);
+				throw new BusinessException(this.errors);
 			}
 
 		}
 
 	}
 
-	private void handleErrorMessage(BussinessException e, String type) {
+	private void handleErrorMessage(BusinessException e, String type) {
 		if (Objects.isNull(this.errors) || !this.errors.isEmpty()) {
 			this.errors = new ArrayList<>();
 		}

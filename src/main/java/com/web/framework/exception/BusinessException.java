@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BussinessException extends Exception {
+public class BusinessException extends Exception {
 
 	private List<ErrorVo> errors;
 	/**
@@ -17,16 +17,16 @@ public class BussinessException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public BussinessException() {
+	public BusinessException() {
 		
 	}
 	
-	public BussinessException(String message)
+	public BusinessException(String message)
     {
        super(message);
     }
 	
-	public BussinessException(List<ErrorVo> error)
+	public BusinessException(List<ErrorVo> error)
     {
 		this.errors=error;
     }

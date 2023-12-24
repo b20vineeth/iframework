@@ -13,6 +13,10 @@ public class UserVo extends AbstractVo {
 
 	public static final String USER_DETAILS = "USER_DETAILS";
 	public static final String USERNAME_SUGGESTIONS = "USERNAME_SUGGESTIONS";
+	public static final String AUTH_SOURCE_LOCAL= "LOCAL";
+	public static final String AUTH_SOURCE_GOOGLE= "GOOGLE";
+	public static final String AUTH_SOURCE_FACEBOOK= "FACEBOOK";
+	 
 	private Integer id;
 	private String uname;
 	private String email;

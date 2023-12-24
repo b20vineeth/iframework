@@ -5,7 +5,7 @@ import java.util.Objects;
   
 
 import com.web.framework.entity.BaseEntity;
-import com.web.framework.exception.BussinessException;
+import com.web.framework.exception.BusinessException;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.Page;
 
@@ -18,7 +18,7 @@ public abstract class Persistor<T extends AbstractVo> implements IPersistor{
 	@PersistenceContext
 	public EntityManager em;
 	
-	 public abstract <R extends Object> R perform(T featureVo) throws BussinessException;
+	 public abstract <R extends Object> R perform(T featureVo) throws BusinessException;
 	 
 	 
 	 public void updatePage(Query q, Page page) {
@@ -38,8 +38,7 @@ public abstract class Persistor<T extends AbstractVo> implements IPersistor{
 		 	if(Objects.isNull(page)) {
 		 		page=new Page();
 		 	}
-		 	Query q1=null;
-			//Query q1 = em.createNativeQuery("Select count(*) from ("+query.toString()+") c where 1=1");
+		 	 Query q1 = em.createNativeQuery("Select count(*) from ("+query.toString()+") c where 1=1");
 			setParameter(detailVo, q1);
 			int count= ((BigInteger) q1.getSingleResult()).intValue();
 			page.setMaxResult(count);

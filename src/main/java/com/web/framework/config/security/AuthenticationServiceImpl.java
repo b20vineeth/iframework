@@ -1,17 +1,24 @@
 package com.web.framework.config.security;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.web.framework.dao.response.AuthenticationResponse;
 import com.web.framework.entity.Role;
 import com.web.framework.entity.User;
+import com.web.framework.exception.BusinessException;
+import com.web.framework.model.response.AuthenticationResponse;
 import com.web.framework.repository.UserRepository;
 import com.web.framework.service.AuthenticationService;
 import com.web.framework.service.JwtService;
+import com.web.framework.util.ICommonUtl;
 import com.web.framework.util.LocalDate;
+import com.web.framework.vo.ErrorVo;
 import com.web.framework.vo.UserVo;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Autowired
-	 UserRepository userRepository ;
+	UserRepository userRepository ;
     
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -29,6 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     JwtService jwtService;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    ICommonUtl utl;
     @Override
     public AuthenticationResponse signup(UserVo uservo) {
     	 
@@ -60,11 +69,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
     @Override
-    public AuthenticationResponse signin(UserVo request) {
+    public AuthenticationResponse signin(UserVo request) throws BusinessException{
         
-        var user = userRepository.findByUname(request.getUname())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
-        var jwt = jwtService.generateToken(user);
-        return  populateAuthenticationResponse( user, jwt);
+    	 Optional<User> userdtl = userRepository.findByUname(request.getUname());
+    	 if(userdtl.isEmpty()) {
+    		 List<ErrorVo> errors = new ArrayList<>();
+    		  errors.add(utl.generateErrorVo("signin.invalidUsernameOrPassword"));
+    		 throw new BusinessException(errors);
+    	 }
+        
+                
+        var jwt = jwtService.generateToken(userdtl.get());
+        return  populateAuthenticationResponse( userdtl.get(), jwt);
     }
 }

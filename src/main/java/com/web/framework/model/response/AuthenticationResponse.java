@@ -1,4 +1,4 @@
-package com.web.framework.dao.response;
+package com.web.framework.model.response;
 
 import com.web.framework.vo.AbstractVo;
 
