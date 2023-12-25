@@ -1,11 +1,11 @@
 package com.web.framework.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.web.framework.vo.UserVo;
 
 public interface JwtService {
     String extractUserName(String token);
 
-    String generateToken(UserDetails userDetails);
+    String generateToken(UserVo userDetails);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isTokenValid(String token, UserVo userDetails);
 }

@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.web.framework.exception.BusinessException;
+import com.web.framework.model.EErrorType;
 import com.web.framework.vo.ErrorVo;
 
 @Component
@@ -144,10 +145,14 @@ public class CommonUtl implements ICommonUtl {
 	}
 
 	@Override
-	public ErrorVo generateErrorVo(String code) {
+	public ErrorVo generateErrorVo(String code, EErrorType type) {
 		ErrorVo error = new ErrorVo();
 		error.setCode(code);
-		error.setMessage(messageSource.getMessage(code, null, LocaleContextHolder.getLocale()));
+		error.setType(type);
+		try {
+			error.setMessage(messageSource.getMessage(code, null, LocaleContextHolder.getLocale()));
+		} catch (Exception e) {
+		}
 		return error;
 	}
 

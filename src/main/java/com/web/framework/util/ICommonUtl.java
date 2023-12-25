@@ -3,6 +3,7 @@ package com.web.framework.util;
 import org.springframework.http.ResponseEntity;
 
 import com.web.framework.exception.BusinessException;
+import com.web.framework.model.EErrorType;
 import com.web.framework.vo.ErrorVo;
 
 public interface ICommonUtl {
@@ -17,7 +18,7 @@ public interface ICommonUtl {
 	public boolean containsWord(String sentence, String wordToCheck);
 	public String getMessage(String msg);
 
-	public ErrorVo generateErrorVo(String string);
+	public ErrorVo generateErrorVo(String string, EErrorType e);
 
 	public ResponseEntity<?> handleErrorMessage(BusinessException e);
 }

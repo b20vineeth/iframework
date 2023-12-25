@@ -8,7 +8,7 @@ import jakarta.validation.Payload;
 @Constraint(validatedBy = { SigninRequestValidator.class })
 @Documented
 public @interface EitherEmailOrUnameRequired {
-    String message() default "{signin.either.unameoremailMandatory}";
+    String message() default "signin.validation.eitherUsernameOrEmailMandatory";
 
     Class<?>[] groups() default {};
 

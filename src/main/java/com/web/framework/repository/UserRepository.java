@@ -11,10 +11,15 @@ import com.web.framework.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     // Since email is unique, we'll find users by email
-     Optional<User>  findByUname(String uname);
-
-	Optional<User> findByEmail(String email); 
+     Optional<User> findByEmail(String email); 
 	
 	 List<User> findByUnameIn(List<String> unames);
 
+	Optional<User> findByUnameAndPassword(String uname, String encode);
+
+	Optional<User> findByEmailAndPassword(String email, String encode);
+	
+	 Optional<User> findByUname(String username);
+
+	 Optional<User> findByUnameOrEmail(String uname,String email);
 }

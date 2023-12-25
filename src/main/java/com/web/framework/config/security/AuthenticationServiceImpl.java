@@ -2,16 +2,21 @@ package com.web.framework.config.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.web.framework.entity.Role;
 import com.web.framework.entity.User;
 import com.web.framework.exception.BusinessException;
+import com.web.framework.model.EErrorType;
 import com.web.framework.model.response.AuthenticationResponse;
 import com.web.framework.repository.UserRepository;
 import com.web.framework.service.AuthenticationService;
@@ -50,7 +55,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(uservo.getEmail()).lastupdate(new LocalDate().now()).build();
         
         userRepository.save(user);
-        var jwt = jwtService.generateToken(user); 
+        uservo.setId(user.getId());
+        var jwt = jwtService.generateToken(uservo); 
         return  populateAuthenticationResponse( user, jwt);
     }
 
@@ -69,17 +75,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
     @Override
-    public AuthenticationResponse signin(UserVo request) throws BusinessException{
-        
-    	 Optional<User> userdtl = userRepository.findByUname(request.getUname());
-    	 if(userdtl.isEmpty()) {
-    		 List<ErrorVo> errors = new ArrayList<>();
-    		  errors.add(utl.generateErrorVo("signin.invalidUsernameOrPassword"));
-    		 throw new BusinessException(errors);
-    	 }
-        
-                
-        var jwt = jwtService.generateToken(userdtl.get());
-        return  populateAuthenticationResponse( userdtl.get(), jwt);
-    }
+	public AuthenticationResponse signin(UserVo request) throws BusinessException {
+
+		User user = null;
+		try {
+			Authentication authenticate = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(Objects.nonNull(request.getUname())?request.getUname():request.getEmail(), request.getPassword()));
+			user = (User) authenticate.getPrincipal();
+		} catch (Exception e) {
+		}
+
+		if (Objects.isNull(user)) {
+			List<ErrorVo> errors = new ArrayList<>();
+			errors.add(utl.generateErrorVo("signin.validation.invalidUsernameOrPassword", EErrorType.E));
+			throw new BusinessException(errors);
+		} else {
+			request.setFirstName(user.getFirstName());
+			request.setLastName(user.getLastName());
+			request.setId(user.getId());
+			request.setUname(user.getUname());
+			request.setEmail(user.getEmail());
+		}
+
+		var jwt = jwtService.generateToken(request);
+		return populateAuthenticationResponse(user, jwt);
+
+	}
 }

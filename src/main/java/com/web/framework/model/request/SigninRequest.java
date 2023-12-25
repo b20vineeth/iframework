@@ -28,10 +28,10 @@ public class SigninRequest extends Model {
  
 	private String uname;
 
-	@NotNull(message = "validation.notNull.password")
+	@NotNull(message = "signin.validation.notNull.password")
 	private String password;
 
-	@NotNull(message = "validation.notNull.provider")
+	@NotNull(message = "signin.validation.notNull.provider")
 	private EProvider provider;
 
 	 

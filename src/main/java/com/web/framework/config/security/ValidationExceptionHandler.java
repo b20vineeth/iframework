@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.web.framework.model.EErrorType;
 import com.web.framework.util.ICommonUtl;
 import com.web.framework.vo.ErrorVo;
 
@@ -29,7 +30,7 @@ public class ValidationExceptionHandler {
 
 		ex.getAllErrors().forEach(err -> {
 
-			errors.add(utl.generateErrorVo(err.getDefaultMessage()));
+			errors.add(utl.generateErrorVo(err.getDefaultMessage(),EErrorType.E));
 		});
 
 		Map<String, List<ErrorVo>> result = new HashMap<>();

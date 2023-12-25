@@ -1,10 +1,12 @@
 package com.web.framework.model.request.validation;
 
+import org.springframework.stereotype.Component;
+
 import com.web.framework.model.request.SigninRequest;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
+@Component
 public class SigninRequestValidator implements ConstraintValidator<EitherEmailOrUnameRequired, SigninRequest> {
 
     @Override
