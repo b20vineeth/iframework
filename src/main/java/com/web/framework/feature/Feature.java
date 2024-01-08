@@ -15,6 +15,8 @@ import com.web.framework.exception.BusinessException;
 import com.web.framework.feature.vo.FeatureVo;
 import com.web.framework.invoker.IInvoker;
 import com.web.framework.message.service.KafkaProducer;
+import com.web.framework.model.EErrorType;
+import com.web.framework.util.ICommonUtl;
 import com.web.framework.validator.IValidator;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.ErrorVo;
@@ -35,6 +37,9 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	
 	 @Autowired
 	 KafkaProducer publisher;
+	 
+	 @Autowired
+	 ICommonUtl utl;
 
 	List<ErrorVo> errors;
 
@@ -175,16 +180,14 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	}
 
 	private void handleErrorMessage(BusinessException e, String type) {
-		if (Objects.isNull(this.errors) || !this.errors.isEmpty()) {
+		if (Objects.isNull(this.errors) || this.errors.isEmpty()) {
 			this.errors = new ArrayList<>();
 		}
 		if(Objects.nonNull(e.getErrors())) {
 			this.errors.addAll(e.getErrors());
 		}
 		else {
-			ErrorVo error=new ErrorVo();
-			error.setCode(type);
-			error.setMessage(e.getMessage());
+			ErrorVo error=utl.generateErrorVo(e.getMessage(), EErrorType.E);
 			this.errors.add(error);
 		}
 	}

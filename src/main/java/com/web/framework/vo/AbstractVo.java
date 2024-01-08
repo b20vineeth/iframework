@@ -9,6 +9,7 @@ public class AbstractVo {
 
 	public static final String YES = "Y";
 	public static final String NO = "N";
+	private static final String FLAG_V = "V"; 
 
 	public String operationFlag;
 
@@ -34,6 +35,7 @@ public class AbstractVo {
 	
 	private HeaderVo header;
 	
+	public String ipaddress;
 	
 	public String component;
 	
@@ -140,5 +142,22 @@ public class AbstractVo {
 	public void setHeader(HeaderVo header) {
 		this.header = header;
 	}
+
+	public String getIpaddress() {
+		return ipaddress;
+	}
+
+	public void setIpaddress(String ipaddress) {
+		this.ipaddress = ipaddress;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
 
 }

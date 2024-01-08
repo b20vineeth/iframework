@@ -9,8 +9,14 @@ import jakarta.validation.ConstraintValidatorContext;
 @Component
 public class SigninRequestValidator implements ConstraintValidator<EitherEmailOrUnameRequired, SigninRequest> {
 
-    @Override
-    public boolean isValid(SigninRequest value, ConstraintValidatorContext context) {
-        return !(value.getEmail() == null && value.getUname() == null) && !(value.getEmail() != null && value.getUname() != null);
-    }
+	@Override
+	public boolean isValid(SigninRequest value, ConstraintValidatorContext context) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+//    @Override
+//    public boolean isValid(SigninRequest value, ConstraintValidatorContext context) {
+//        return !(value.getEmail() == null && value.getUname() == null) && !(value.getEmail() != null && value.getUname() != null);
+//    }
 }

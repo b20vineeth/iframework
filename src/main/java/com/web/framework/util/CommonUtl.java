@@ -11,13 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -164,4 +167,52 @@ public class CommonUtl implements ICommonUtl {
 			return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
 		 
 	}
+	public String getRandomtoken() throws Exception {
+		 
+        SecretKey secretKey = generateSecretKey();
+
+        // Get the current time as a string
+        String currentTime = Long.toString(System.currentTimeMillis());
+
+        // Generate a random number between 11111 and 99999
+        int randomNumber = generateRandomNumber(11111, 99999);
+
+        // Create a string combining current time and random number
+        String combinedString = currentTime + randomNumber;
+
+        // Encrypt the combined string
+       return encrypt(combinedString, secretKey);
+       
+		
+	}
+	private static SecretKey generateSecretKey() throws Exception {
+        // Use AES algorithm
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+
+        // Generate a 128-bit key
+        keyGenerator.init(128);
+
+        // Generate the secret key
+        return keyGenerator.generateKey();
+    }
+
+	public  int generateRandomNumber(int min, int max) {
+        Random random = new Random();
+        return random.nextInt((max - min) + 1) + min;
+    }
+
+    private static String encrypt(String originalString, SecretKey secretKey) throws Exception {
+        // Get a cipher instance
+        Cipher cipher = Cipher.getInstance("AES");
+
+        // Initialize the cipher for encryption
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+        // Encrypt the string
+        byte[] encryptedBytes = cipher.doFinal(originalString.getBytes());
+
+        // Convert the encrypted bytes to Base64 for easy representation
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+	 
 }

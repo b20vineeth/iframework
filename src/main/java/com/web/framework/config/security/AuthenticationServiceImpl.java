@@ -32,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 	
+	
+	private static final String CREATED = "C";
 	@Autowired
 	UserRepository userRepository ;
     
@@ -76,7 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
 	public AuthenticationResponse signin(UserVo request) throws BusinessException {
-
+    	List<ErrorVo> errors = new ArrayList<>();
 		User user = null;
 		try {
 			Authentication authenticate = authenticationManager
@@ -86,7 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 
 		if (Objects.isNull(user)) {
-			List<ErrorVo> errors = new ArrayList<>();
+			
 			errors.add(utl.generateErrorVo("signin.validation.invalidUsernameOrPassword", EErrorType.E));
 			throw new BusinessException(errors);
 		} else {
@@ -95,6 +97,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			request.setId(user.getId());
 			request.setUname(user.getUname());
 			request.setEmail(user.getEmail());
+			if(CREATED.equals(user.getStatus())) {
+				errors.add(utl.generateErrorVo("admin.signin.validation.verifyemailid", EErrorType.W));
+				throw new BusinessException(errors);
+			}
 		}
 
 		var jwt = jwtService.generateToken(request);

@@ -13,18 +13,17 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserModel extends Model {
 	
-	private String id;
-	@JsonProperty("user_name")
+	private String id; 
 	private String username;
-	@JsonProperty("first_name")
+	@JsonProperty("firstname")
 	private String firstname;
-	@JsonProperty("last_name")
+	@JsonProperty("lastname")
 	private String lastname;
 	@JsonProperty("email")
 	private String  email;
-	@JsonProperty("valid_from")
+	@JsonProperty("validfrom")
 	private Date validFrom;
-	@JsonProperty("valid_to")
+	@JsonProperty("validto")
 	private Date validTo;
 
 }

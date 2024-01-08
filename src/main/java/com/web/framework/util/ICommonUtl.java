@@ -21,4 +21,6 @@ public interface ICommonUtl {
 	public ErrorVo generateErrorVo(String string, EErrorType e);
 
 	public ResponseEntity<?> handleErrorMessage(BusinessException e);
+	public String getRandomtoken() throws Exception;
+	public  int generateRandomNumber(int min, int max);
 }

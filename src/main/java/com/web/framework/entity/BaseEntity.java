@@ -2,14 +2,12 @@ package com.web.framework.entity;
 
 import java.io.Serializable;
 import java.util.Date;
- 
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.lang.NonNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

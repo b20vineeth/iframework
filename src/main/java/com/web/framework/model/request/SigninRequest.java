@@ -19,13 +19,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
-@EitherEmailOrUnameRequired
+@Setter 
 public class SigninRequest extends Model {
  
-	 
-	private String email;
- 
+	  
+	@NotNull(message = "signin.validation.notNull.uname")
 	private String uname;
 
 	@NotNull(message = "signin.validation.notNull.password")
