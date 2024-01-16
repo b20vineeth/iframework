@@ -52,7 +52,7 @@ public class JwtServiceImpl implements JwtService {
 				.claim("status", userDetails.getStatus()) 
 				.claim("firstname", userDetails.getFirstName())  
 				.claim("lastname", userDetails.getLastName()).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*7))
 				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
 	}
 

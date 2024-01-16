@@ -8,9 +8,11 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.google.gson.Gson;
 import com.web.framework.enricher.IEnricher;
+import com.web.framework.entity.User;
 import com.web.framework.exception.BusinessException;
 import com.web.framework.feature.vo.FeatureVo;
 import com.web.framework.invoker.IInvoker;
@@ -120,7 +122,7 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	}
 	private void postinvoker(T featureVo, FeatureVo featureConfig) {
 
-		if (Objects.nonNull(featureConfig) && Objects.nonNull(featureConfig.getPreinvoker())) {
+		if (Objects.nonNull(featureConfig) && Objects.nonNull(featureConfig.getPostinvoker())) {
 
 			featureConfig.getPostinvoker().stream().forEach(invoker -> {
 				try {
@@ -140,14 +142,14 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (Objects.nonNull(authentication) && !"anonymousUser".equals(authentication.getPrincipal())) {
 
-//			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//			if (Objects.nonNull(userDetails)) {
-//				uservo = new UserVo();
-//				Long id = userDetails.getId();
-//				uservo.setId(id.intValue());
-//				uservo.setUsername(userDetails.getUsername());
-//				uservo.setEmail(userDetails.getEmail());
-//			}
+			UserVo userDetails = (UserVo) authentication.getPrincipal();
+			if (Objects.nonNull(userDetails)) {
+				uservo = new UserVo();
+				Integer id = userDetails.getId();
+				uservo.setId(id.intValue());
+				uservo.setUname(userDetails.getUname());
+				uservo.setEmail(userDetails.getEmail());
+			}
 		}
 		if (Objects.nonNull(featureVo) && Objects.nonNull(uservo)) {
 			featureVo.setUserVo(uservo);
