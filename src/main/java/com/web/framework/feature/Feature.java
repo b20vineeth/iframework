@@ -8,11 +8,10 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.web.framework.enricher.IEnricher;
-import com.web.framework.entity.User;
 import com.web.framework.exception.BusinessException;
 import com.web.framework.feature.vo.FeatureVo;
 import com.web.framework.invoker.IInvoker;
@@ -23,9 +22,13 @@ import com.web.framework.validator.IValidator;
 import com.web.framework.vo.AbstractVo;
 import com.web.framework.vo.ErrorVo;
 import com.web.framework.vo.EventVo;
+import com.web.framework.vo.PrivilegeFilterVo;
 import com.web.framework.vo.UserVo;
+
+import jakarta.servlet.http.HttpSession;
  
 public abstract class Feature<T extends AbstractVo> implements IFeature {
+
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
@@ -44,6 +47,10 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	 ICommonUtl utl;
 
 	List<ErrorVo> errors;
+	 
+	
+	@Autowired
+	private HttpSession httpSession;
 
 	protected abstract <R extends Object> R perform(T featureVo) throws BusinessException;
 
@@ -52,8 +59,27 @@ public abstract class Feature<T extends AbstractVo> implements IFeature {
 	public <R extends Object> R execute(T featureVo) throws BusinessException {
 		this.errors=null;
 		FeatureVo featureConfig = getBussinessConfiguration();
+		if(Objects.nonNull(featureConfig.getFeatureName())){
+			
+			try {
+				 Class<?> component = Class.forName(this.getClass().getName()); 
+				 if(Objects.nonNull(component.getAnnotation(Component.class))) {
+					 String componentName= component.getAnnotation(Component.class).value();
+					 PrivilegeFilterVo filterVo=new PrivilegeFilterVo();
+					 filterVo.setPrivilegeCode(componentName);
+//					 PrivilegeVo privilegeVo= privilegeComponent.fetchPrivilege(filterVo);
+//					 httpSession.setAttribute(PrivilegeVo.PRIVILEGE_DETAILS, privilegeVo.getPrivilegeCodes());
+//					 
+				 } 	 
+			} catch (ClassNotFoundException e) {
+				 
+				e.printStackTrace();
+			}
+			
+		}
 
 		updateUserDetails(featureVo);
+		
 		preinvoker(featureVo, featureConfig);
 		validator(featureVo, featureConfig);
 		enricher(featureVo, featureConfig);

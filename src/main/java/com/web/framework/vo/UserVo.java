@@ -1,5 +1,9 @@
 package com.web.framework.vo;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.web.framework.model.EProvider;
 
@@ -36,6 +40,9 @@ public class UserVo extends AbstractVo {
 	private String token;
 	
 	private EProvider provider;
+
+	Collection<? extends GrantedAuthority> authorities; 
+	
 	
 
 }

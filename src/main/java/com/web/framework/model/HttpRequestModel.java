@@ -2,20 +2,24 @@ package com.web.framework.model;
 
 import java.util.List;
 
+import org.springframework.http.HttpMethod;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.web.framework.vo.Page;
 
 import lombok.Getter;
 import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter 
-public class RequestModel {
+public class HttpRequestModel {
 
 	Model data;
 	
 	List<? extends Model>  datas;
 	 
-	Page page;
+	HttpMethod requestType; 
+	
+	EReturnType returnType; 
 	 
 }
+ 

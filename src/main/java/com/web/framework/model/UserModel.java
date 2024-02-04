@@ -1,6 +1,9 @@
 package com.web.framework.model;
 
+import java.util.Collection;
 import java.util.Date;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,5 +28,7 @@ public class UserModel extends Model {
 	private Date validFrom;
 	@JsonProperty("validto")
 	private Date validTo;
+	
+	Collection<? extends GrantedAuthority> authorities; 
 
 }
