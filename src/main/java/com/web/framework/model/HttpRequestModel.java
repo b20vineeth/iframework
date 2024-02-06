@@ -20,6 +20,9 @@ public class HttpRequestModel {
 	HttpMethod requestType; 
 	
 	EReturnType returnType; 
+	
+	String service;
 	 
+	String isAuthorized="F";
 }
  

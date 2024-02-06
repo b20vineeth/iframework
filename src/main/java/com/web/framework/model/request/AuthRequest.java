@@ -17,6 +17,7 @@ public class AuthRequest extends Model {
  
 	  
 	 private String uname;
+	 private int id;
 
 	 
 

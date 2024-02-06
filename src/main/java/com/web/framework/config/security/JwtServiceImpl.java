@@ -27,7 +27,24 @@ public class JwtServiceImpl implements JwtService {
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
+    public Integer extractUserId(String token) {
+    	Claims claims = extractAllClaims(token);
+    	return (Integer) claims.get("userId");
+    }
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolvers.apply(claims);
+    }
+    private String generateToken(Map<String, Object> extraClaims, UserVo userDetails) {
+		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUname())
+				.claim("userId", userDetails.getId())  
+				.claim("email", userDetails.getEmail())  
+				.claim("status", userDetails.getStatus()) 
+				.claim("firstname", userDetails.getFirstName())  
+				.claim("lastname", userDetails.getLastName()).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*7))
+				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+	}
     @Override
     public String generateToken(UserVo userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -39,21 +56,9 @@ public class JwtServiceImpl implements JwtService {
         return (userName.equals(userDetails.getUname())) && !isTokenExpired(token);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolvers.apply(claims);
-    }
+    
 
-	private String generateToken(Map<String, Object> extraClaims, UserVo userDetails) {
-		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUname())
-				.claim("userId", userDetails.getId())  
-				.claim("email", userDetails.getEmail())  
-				.claim("status", userDetails.getStatus()) 
-				.claim("firstname", userDetails.getFirstName())  
-				.claim("lastname", userDetails.getLastName()).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*7))
-				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
-	}
+	
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

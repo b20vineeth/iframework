@@ -28,8 +28,8 @@ public class Listener {
 		String[] events = eventVo.getEventName().split(",");
 		try {
 			Class classname = Class.forName(eventVo.getMsgClass());
-			AbstractVo abstractVo=	(AbstractVo) new Gson().fromJson(eventVo.getMsg(), classname);
-			for (String event : events) {
+			AbstractVo abstractVo= (AbstractVo) new Gson().fromJson(eventVo.getMsg(), classname);
+			 for (String event : events) {
  
 				String eventName=new StringBuilder().append("_").append(event.toUpperCase()).append("EVENT").toString();
 		        Map<String, IEvent> filteredMap = ievent.entrySet().stream()
@@ -42,6 +42,7 @@ public class Listener {
 
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

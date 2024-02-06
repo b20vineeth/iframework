@@ -1,10 +1,7 @@
 package com.web.framework.vo;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.web.framework.entity.Role;
 import com.web.framework.model.EProvider;
 
 import lombok.Getter;
@@ -20,7 +17,7 @@ public class UserVo extends AbstractVo {
 	public static final String AUTH_SOURCE_GOOGLE= "GOOGLE";
 	public static final String AUTH_SOURCE_FACEBOOK= "FACEBOOK"; 
 	
-	
+	 
 	private Integer id;
 	
 	@JsonProperty("uname")
@@ -40,8 +37,8 @@ public class UserVo extends AbstractVo {
 	private String token;
 	
 	private EProvider provider;
-
-	Collection<? extends GrantedAuthority> authorities; 
+ 
+	private Role role;
 	
 	
 

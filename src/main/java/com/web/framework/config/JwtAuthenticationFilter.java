@@ -6,10 +6,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,8 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.JsonObject;
+import com.web.framework.httpcontroller.HttpActionMethod;
 import com.web.framework.httpcontroller.IHttpPost;
-import com.web.framework.mapper.UserMapper;
+import com.web.framework.mapper.ComponentMapper;
 import com.web.framework.model.HttpRequestModel;
 import com.web.framework.model.UserModel;
 import com.web.framework.model.request.AuthRequest;
@@ -44,14 +43,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	Security security;
 	@Autowired
-	UserMapper mapper;
+	ComponentMapper mapper;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
 		final String authHeader = request.getHeader("Authorization");
 		final String jwt;
-		final String userEmail;
+		final Integer userid;
 		String isAuth = request.getHeader("isAuthorized");
 		if (Objects.isNull(isAuth)) {
 			isAuth = "F";
@@ -62,14 +61,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		jwt = authHeader.substring(7);
 		try {
-			userEmail = jwtService.extractUserName(jwt);
-			if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
+			userid = jwtService.extractUserId(jwt);
+			if (Objects.nonNull(userid) && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 				AuthRequest authrequest = new AuthRequest();
-				authrequest.setUname(userEmail);
+				authrequest.setId(userid);
 				HttpRequestModel httpmodel = new HttpRequestModel();
 				httpmodel.setData(authrequest);
 				httpmodel.setRequestType(HttpMethod.POST);
+				httpmodel.setIsAuthorized("T");
+				httpmodel.setService(HttpActionMethod.AUTH_LOAD_USERNAME);
 				JsonObject details = httpPost.getDetails(httpmodel);
 				UserModel usermodel = mapper.toUserModel(details.getAsJsonObject("data"));
 				String ids;

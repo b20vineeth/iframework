@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class AbstractVo {
 
 	public static final String YES = "Y";
@@ -48,7 +47,7 @@ public class AbstractVo {
 
 	Page page;
 
-	
+	private long lastActivityTime;
 	
 	public Page getPage() {
 		return page;
@@ -160,4 +159,13 @@ public class AbstractVo {
 	}
 	
 
+    public long getLastActivityTime() {
+		return lastActivityTime;
+	}
+
+	public void setLastActivityTime(long lastActivityTime) {
+		this.lastActivityTime = lastActivityTime;
+	}
+
+  
 }
