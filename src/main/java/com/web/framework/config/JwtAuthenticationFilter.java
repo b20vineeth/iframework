@@ -66,6 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 				AuthRequest authrequest = new AuthRequest();
 				authrequest.setId(userid);
+				authrequest.setToken(jwtService.extractKey(jwt));
 				HttpRequestModel httpmodel = new HttpRequestModel();
 				httpmodel.setData(authrequest);
 				httpmodel.setRequestType(HttpMethod.POST);

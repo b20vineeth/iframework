@@ -3,6 +3,7 @@ package com.web.framework.vo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.web.framework.entity.Role;
 import com.web.framework.model.EProvider;
+import com.web.framework.util.CacheKey;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class UserVo extends AbstractVo {
 	public static final String AUTH_SOURCE_GOOGLE= "GOOGLE";
 	public static final String AUTH_SOURCE_FACEBOOK= "FACEBOOK"; 
 	
-	 
+	@CacheKey
 	private Integer id;
 	
 	@JsonProperty("uname")
@@ -34,6 +35,7 @@ public class UserVo extends AbstractVo {
 	
 	private String currentpassword;
 	
+	@CacheKey
 	private String token;
 	
 	private EProvider provider;

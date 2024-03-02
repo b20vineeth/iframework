@@ -3,6 +3,8 @@ package com.web.framework.vo;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.web.framework.util.CacheKey;
+import java.lang.reflect.Field;
 
 public class AbstractVo {
 
@@ -31,6 +33,7 @@ public class AbstractVo {
 
 	@JsonProperty("created_from_date")
 	private Date fromDate;
+	 
 	
 	private HeaderVo header;
 	
@@ -48,6 +51,7 @@ public class AbstractVo {
 	Page page;
 
 	private long lastActivityTime;
+	private Date  expiryDate;
 	
 	public Page getPage() {
 		return page;
@@ -166,6 +170,48 @@ public class AbstractVo {
 	public void setLastActivityTime(long lastActivityTime) {
 		this.lastActivityTime = lastActivityTime;
 	}
+
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+	
+	
+	
+	
+ 
+	public String getCacheName() {
+		 return getClass().getSimpleName();
+	}
+	public String generateCacheKey() {
+		StringBuilder keyBuilder = new StringBuilder();
+		// Get all fields declared in the class, including inherited fields
+		Field[] fields = getClass().getDeclaredFields();
+		for (Field field : fields) {
+			// Check if the field is annotated with the @CacheableField annotation
+			if (field.isAnnotationPresent(CacheKey.class)) {
+				try {
+					// Access the field's value and append it to the cache key
+					field.setAccessible(true);
+					Object value = field.get(this);
+					if (value != null) {
+						keyBuilder.append(value.toString()).append("_");
+					}
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		// Remove the trailing underscore, if any
+		if (keyBuilder.length() > 0) {
+			keyBuilder.setLength(keyBuilder.length() - 1);
+		}
+		return keyBuilder.toString();
+	}
+
 
   
 }

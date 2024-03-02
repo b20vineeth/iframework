@@ -35,6 +35,8 @@ public class RedisConfig {
 
 	@Value("${spring.redis.port}")
 	private int redisPort;
+	@Value("${spring.redis.maxexpiry}")
+	private int maxExpiry;
 
 	@Bean
 	public RedisTemplate<String, Serializable> redisCacheTemplate(LettuceConnectionFactory redisConnectionFactory) {
@@ -44,41 +46,14 @@ public class RedisConfig {
 		template.setConnectionFactory(redisConnectionFactory);
 		return template;
 	}
-
-//	@Bean
-//	public CacheManager cacheManager(RedisConnectionFactory factory, ObjectMapper objectMapper) {
-//	//public CacheManager cacheManager(RedisConnectionFactory factory) {
-//	/*
-//	   	RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-//	
-//		RedisCacheConfiguration redisCacheConfiguration = config
-//				.serializeKeysWith(
-//						RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-//				.serializeValuesWith(RedisSerializationContext.SerializationPair
-//						.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-//				.entryTtl(Duration.ofMinutes(10));
-//		RedisCacheManager redisCacheManager = RedisCacheManager.builder(factory).cacheDefaults(redisCacheConfiguration)
-//				.build();
-//		return redisCacheManager;
-//	 */
-//		
-//		 RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-//	                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-//	                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new CustomJsonRedisSerializer<>(objectMapper)))
-//	                .entryTtl(Duration.ofMinutes(10)); // Set expiration time to 10 minutes
-//
-//	        return RedisCacheManager.builder(factory)
-//	                .cacheDefaults(config)
-//	                .build();
-//	}
-	
+ 
 	@Bean
     public CacheManager cacheManager(RedisConnectionFactory connectionFactory,ObjectMapper objectMapper) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                 		.fromSerializer(new CustomJsonRedisSerializer(objectMapper)))
-                .entryTtl(Duration.ofMinutes(10));
+                .entryTtl(Duration.ofMinutes(maxExpiry));
 
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(config)

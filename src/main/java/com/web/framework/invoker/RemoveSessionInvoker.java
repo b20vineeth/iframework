@@ -18,8 +18,9 @@ public class RemoveSessionInvoker extends Invoker{
 	
 	@Override
 	public void execute(AbstractVo featureVo) throws BusinessException {
-		
+		try {
 		httpSession.invalidate();
+		}catch(Exception e) {}
 		
 	}
 

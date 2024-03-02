@@ -58,8 +58,7 @@ public class CustomJsonRedisSerializer<T> extends GenericJackson2JsonRedisSerial
 							// For non-enum fields, set the value directly
 							field.set(object, value);
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) { 
 					}
 				}
             }

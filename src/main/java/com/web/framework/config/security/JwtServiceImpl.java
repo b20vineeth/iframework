@@ -23,6 +23,8 @@ public class JwtServiceImpl implements JwtService {
 	
     @Value("${token.signing.key}")
     private String jwtSigningKey;
+    
+
     @Override
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -30,6 +32,11 @@ public class JwtServiceImpl implements JwtService {
     public Integer extractUserId(String token) {
     	Claims claims = extractAllClaims(token);
     	return (Integer) claims.get("userId");
+    }
+    public String extractKey(String token) {
+    	Claims claims = extractAllClaims(token);
+    	Long lastActivityTime = (Long) claims.get("lastactivityTime");
+    	return lastActivityTime.toString();
     }
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
@@ -41,8 +48,10 @@ public class JwtServiceImpl implements JwtService {
 				.claim("email", userDetails.getEmail())  
 				.claim("status", userDetails.getStatus()) 
 				.claim("firstname", userDetails.getFirstName())  
-				.claim("lastname", userDetails.getLastName()).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24*7))
+				.claim("lastname", userDetails.getLastName())
+				.claim("lastactivityTime", userDetails.getLastActivityTime())
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(userDetails.getExpiryDate())
 				.signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
 	}
     @Override
