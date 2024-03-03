@@ -1,22 +1,23 @@
 package com.web.framework.model;
 
-import java.util.List;
-
-import com.web.framework.vo.ErrorVo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ErrorModel extends Model{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ErrorModel extends Model {
 
-	List<ErrorVo> errors;
+	@JsonProperty("code")
+	private String code;
 	
-	public ErrorModel(List<ErrorVo> errors) {
-		 this.errors=errors;
-	}
-	public ErrorModel() { 
-	}
+	@JsonProperty("message")
+	private String message;
+	
+	@JsonProperty("type")
+	private EErrorType type;
 
 }

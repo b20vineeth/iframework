@@ -9,6 +9,12 @@ import com.web.framework.vo.AbstractVo;
 @Component
 public abstract class MPersistor<T extends AbstractVo> implements IMPersistor{
 
-	 public abstract <R extends Object> R perform(T featureVo) throws BusinessException;
-	 public abstract List<T> getList(T featureVo) throws BusinessException;	
+	 public  <R extends Object> R perform(T featureVo) throws BusinessException{
+		return null;
+		 
+	 }
+	 public   List<T> getList(T featureVo) throws BusinessException{
+		return null;
+		 
+	 }
 }
